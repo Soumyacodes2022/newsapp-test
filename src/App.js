@@ -1,16 +1,18 @@
 // import logo from './logo.svg';
 // import './App.css';
 import React, { Component } from 'react'
-import Navbar from './Components/Navbar';
 import News from './Components/News';
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
+// import PropTypes from 'prop-types'
+
 
 export default class App extends Component {
+  
 
   render() {
     return (
       <Router>
-          <Navbar />
+          
           <div>
           <Routes>
             <Route exact path="/"  index element={<News key="general" country="in" category="general" />} />

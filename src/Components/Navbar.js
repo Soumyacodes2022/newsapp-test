@@ -3,12 +3,28 @@ import React, { Component } from 'react'
 import {Link}from 'react-router-dom'
 
 
-export class Navbar extends Component {
-  static propTypes = {
 
+export class Navbar extends Component {
+  constructor(){
+    super()
+    this.state={
+      
+      input:""
+    }
   }
+  handleChange=(event)=>{
+    this.setState({input: event.target.value})
+    
+}
+handleSearch=(e)=>{
+  e.preventDefault()
+  this.props.updateNews(this.state.input)
+}
 
   render() {
+    
+
+    
     return (
         
         <nav className="navbar navbar-expand-lg  navbar-dark bg-dark">
@@ -28,15 +44,15 @@ export class Navbar extends Component {
               <li className="nav-item"><Link className="nav-link" to="/science">Science</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/sports">Sports</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/technology">Technology </Link></li>
-              <li className="nav-item"><Link className="nav-link" to="/about">About</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/about">About Us</Link></li>
                 
               
                  
               
             </ul>
             <form className="d-flex" role="search">
-              <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-              <button className="btn btn-outline-light" type="submit">Search</button>
+            <input className="form-control me-2" type="search" value={this.state.input} onChange={this.handleChange} placeholder="Search" aria-label="Search"/>
+              <button className="btn btn-outline-light" onClick={this.handleSearch} type="submit">Search</button>
             </form>
           </div>
         </div>
