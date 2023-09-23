@@ -31,8 +31,10 @@ export class News extends Component {
   }
 
   async updateNews(value = "") {
-    let url = `https://newsapi.org/v2/top-headlines?q=${value}country=${this.props.country}&category=${this.props.category}&apiKey=30902fd75edf4c87884bfde019a7c36e&page=${this.state.page}&pageSize=${this.state.pageSize}`;
-
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=30902fd75edf4c87884bfde019a7c36e&page=${this.state.page}&pageSize=${this.state.pageSize}`;
+    if(value){
+      url+= `&q=${value}`
+    }
     
     this.setState({ loading: true })
     try {
