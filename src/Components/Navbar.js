@@ -12,15 +12,7 @@ export class Navbar extends Component {
       input:""
     }
   }
-  handleChange=(event)=>{
-    this.setState({input: event.target.value})
-    
-}
-handleSearch=(e)=>{
-  e.preventDefault()
-  this.props.updateNews(this.state.input)
-}
-
+  
   render() {
     
 
@@ -51,7 +43,7 @@ handleSearch=(e)=>{
               
             </ul>
             <form className="d-flex" role="search">
-            <input className="form-control me-2" type="search" value={this.state.input} onChange={this.handleChange} placeholder="Search" aria-label="Search"/>
+            <input className="form-control me-2" type="search"  placeholder="Search" aria-label="Search"/>
               <button className="btn btn-outline-light" onClick={this.handleSearch} type="submit">Search</button>
             </form>
           </div>
