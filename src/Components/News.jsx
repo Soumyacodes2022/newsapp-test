@@ -6,7 +6,7 @@ import Navbar from './Navbar';
 
 
 const News = (props) => {
-  const [articles, setArticles] = useState([]);
+  const [results, setResults] = useState([]);
   const [page, setPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
   // document.title = `TaazaNews-${capitalizeFirstLetter(props.category)}`
@@ -17,8 +17,8 @@ const News = (props) => {
 
   const updateNews = async () => {
     props.setProgress(15);
-    let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
-
+    // let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
+    let url = `https://newsdata.io/api/1/latest?apiKey=${props.apiKey}&country=${props.country}&category=${props.category}`;
     // if (value) {
     //   url += `&q=${value}`
     // }
@@ -27,9 +27,10 @@ const News = (props) => {
     props.setProgress(30);
 
     let parsedData = await data.json();
+    console.log(parsedData)
+
     props.setProgress(50);
-    setArticles(parsedData.articles);
-    setTotalResults(parsedData.totalResults);
+    setResults(parsedData.results);
     props.setProgress(100);
   };
   useEffect(() => {
@@ -39,12 +40,13 @@ const News = (props) => {
   const fetchMoreData = async () => {
     setPage(page + 1);
 
-    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page+1}&pageSize=${props.pageSize}`;
+    // const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page+1}&pageSize=${props.pageSize}`;
+    const url = `https://newsdata.io/api/1/latest?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&nextPage=nextPage`;
 
     const data = await fetch(url);
     const parsedData = await data.json();
-    setArticles(articles.concat(parsedData.articles));
-    setTotalResults(parsedData.totalResults);
+    console.log(parsedData)
+    setResults(results.concat(parsedData.results));
   };
 
   return (
@@ -55,14 +57,10 @@ const News = (props) => {
         TaazaNEWS - Top Headlines on {capitalizeFirstLetter(props.category)}
       </h1>
 
-      <InfiniteScroll
-        dataLength={articles.length}
-        next={fetchMoreData}
-        hasMore={articles.length < totalResults}
-      >
+      
         <div className="container my-3">
           <div className="row">
-            {articles.map((item, index) => {
+            {results && results.map((item, index) => {
               return (
                 <div className="col-md-4" key={index}>
                   <NewsItem
@@ -70,18 +68,17 @@ const News = (props) => {
                     description={
                       item.description ? item.description.slice(0, 103) : ""
                     }
-                    imageURL={item.urlToImage}
+                    imageURL={item.image_url}
                     URL={item.url}
-                    author={item.author}
-                    publishedAt={item.publishedAt}
-                    source={item.source.name}
+                    author={item.creator}
+                    publishedAt={item.pubDate}
+                    source={item.source_name}
                   />
                 </div>
               );
             })}
           </div>
         </div>
-      </InfiniteScroll>
     </>
   );
 };

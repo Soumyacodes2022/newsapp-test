@@ -8,7 +8,7 @@ import LoadingBar from "react-top-loading-bar";
 // import PropTypes from 'prop-types'
 
 const App = () => {
-  const apiKey = "30902fd75edf4c87884bfde019a7c36e";
+  const apiKey = process.env.API_KEY;
 
   const [progress, setProgress] = useState(0);
 
@@ -32,7 +32,7 @@ const App = () => {
                 apiKey={apiKey}
                 key="general"
                 country="in"
-                category="general"
+                category="top"
               />
             }
           />
