@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import NewsItem from "./NewsItem";
-import Spinner from "./spinner";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Navbar from './Navbar';
 
 
 const News = (props) => {
   const [articles, setArticles] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
   // document.title = `TaazaNews-${capitalizeFirstLetter(props.category)}`
@@ -21,7 +19,6 @@ const News = (props) => {
     props.setProgress(15);
     let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
 
-    setLoading(true);
     // if (value) {
     //   url += `&q=${value}`
     // }
@@ -32,7 +29,6 @@ const News = (props) => {
     let parsedData = await data.json();
     props.setProgress(50);
     setArticles(parsedData.articles);
-    setLoading(false);
     setTotalResults(parsedData.totalResults);
     props.setProgress(100);
   };
@@ -44,13 +40,11 @@ const News = (props) => {
     setPage(page + 1);
 
     const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page+1}&pageSize=${props.pageSize}`;
-    setLoading(true);
 
     const data = await fetch(url);
     const parsedData = await data.json();
     setArticles(articles.concat(parsedData.articles));
     setTotalResults(parsedData.totalResults);
-    setLoading(false);
   };
 
   return (
@@ -65,7 +59,6 @@ const News = (props) => {
         dataLength={articles.length}
         next={fetchMoreData}
         hasMore={articles.length < totalResults}
-        loader={<Spinner />}
       >
         <div className="container my-3">
           <div className="row">
