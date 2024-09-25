@@ -8,7 +8,6 @@ import Navbar from './Navbar';
 const News = (props) => {
   const [results, setResults] = useState([]);
   const [page, setPage] = useState(1);
-  const [totalResults, setTotalResults] = useState(0);
   // document.title = `TaazaNews-${capitalizeFirstLetter(props.category)}`
 
   const capitalizeFirstLetter = (string) => {

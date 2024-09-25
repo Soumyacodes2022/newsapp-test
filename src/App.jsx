@@ -4,11 +4,11 @@ import React, { useState } from "react";
 import News from "./Components/News";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import LoadingBar from "react-top-loading-bar";
-
 // import PropTypes from 'prop-types'
 
 const App = () => {
-  const apiKey = process.env.API_KEY;
+  const apiKey = process.env.REACT_APP_API_KEY;
+  console.log(apiKey);
 
   const [progress, setProgress] = useState(0);
 
