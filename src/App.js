@@ -5,7 +5,7 @@ function App() {
   const [news, setNews] = useState([]); // State to store fetched news
   const [error, setError] = useState(null);
   const newNews = async()=>{
-    const apiKey = process.env.REACT_APP_NEWS_API_KEY;
+    const apiKey = '426c03e1761fa71c52a555e287cc2ccf';
     console.log(apiKey)
     if (!apiKey) {
       setError('API key is missing');
