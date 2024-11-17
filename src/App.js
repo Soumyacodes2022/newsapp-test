@@ -11,7 +11,7 @@ function App() {
       setError('API key is missing');
       return;
     }
-    const url = `https://content.guardianapis.com/search?api-key=${apiKey}`;
+    const url = `https://gnews.io/api/v4/search?q=example&apikey=${apiKey}`;
     try {
       const response = await fetch(url);
       if (!response.ok) {
