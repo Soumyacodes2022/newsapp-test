@@ -5,7 +5,13 @@ function App() {
   const [news, setNews] = useState([]); // State to store fetched news
   const [error, setError] = useState(null);
   const newNews = async()=>{
-    const url = `https://content.guardianapis.com/search?api-key=208ec3cc-f15f-4719-9ca5-cb034ba7e87f`;
+    const apiKey = process.env.REACT_APP_NEWS_API_KEY;
+    console.log(apiKey)
+    if (!apiKey) {
+      setError('API key is missing');
+      return;
+    }
+    const url = `https://content.guardianapis.com/search?api-key=${apiKey}`;
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -14,7 +20,7 @@ function App() {
       const data = await response.json();
       console.log(data) // Assuming `data.response.results` contains the news articles
     } catch (err) {
-      setError(err);
+      setError(err.message);
     }
   }
   useEffect(() => {
