@@ -1,32 +1,44 @@
-import React from 'react'
-// import PropTypes from 'prop-types'
+import React from 'react';
 
 const NewsItem = (props) => {
+  const { title, description, imageURL, URL, publishedAt, source } = props;
 
+  return (
+    <div className="news-card-container">
+      <div className="news-card">
+        <div className="source-badge">
+          <span className="badge-text">{source}</span>
+        </div>
+        
+        <div className="image-container">
+          <img 
+            src={!imageURL ? "https://demofree.sirv.com/nope-not-here.jpg" : imageURL} 
+            alt={title}
+            className="card-image"
+          />
+        </div>
 
-  
-    let { title, description, imageURL, author, URL, publishedAt, source } = props
-    return (
-      <div>
-
-        <div className="card mb-5" >
-          <div style={{ display: 'flex', justifyContent: 'flex-end', position: 'absolute', right: 0 }}>
-          <span className=" badge rounded-pill bg-danger" >
-            {source}
-
-          </span>
-          </div>
-          <img src={!imageURL ? "https://demofree.sirv.com/nope-not-here.jpg" : imageURL} className="card-img-top" style={{ height: "200px" }} alt="..." />
-          <div className="card-body " style={{ height: '300px' }}>
-            <h5 className="card-title">{title}...</h5>
-            <p className="card-text">{description}...</p>
-            <p className="card-text "><small className="text-body-danger text-danger">By {!author ? "Unknown" : author},published at {new Date(publishedAt).toGMTString()}</small></p>
-            <a href={URL} rel="noreferrer" target="_blank" className="btn btn-sm btn-dark">Read More</a>
+        <div className="card-content">
+          <h5 className="card-title">{title}...</h5>
+          <p className="card-description">{description}...</p>
+          
+          <div className="card-footer">
+            <p className="publish-date">
+              {new Date(publishedAt).toLocaleDateString('en-US', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+              })}
+            </p>
+            <a href={URL} rel="noreferrer" target="_blank" className="read-more-btn">
+              Read More
+              <span className="arrow">→</span>
+            </a>
           </div>
         </div>
       </div>
-    )
-  
-}
+    </div>
+  );
+};
 
-export default NewsItem
+export default NewsItem;

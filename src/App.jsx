@@ -4,15 +4,22 @@ import React, { useState } from "react";
 import News from "./Components/News";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import LoadingBar from "react-top-loading-bar";
+import AboutUs from "./Components/AboutUs";
+import { ThemeProvider } from "./context/ThemeContext";
+import Login from "./Components/auth/Login";
 // import PropTypes from 'prop-types'
 
 const App = () => {
-  const apiKey = process.env.REACT_APP_API_KEY;
+  // const apiKey = 'pub_3188391b3fa0ba9978a80ebacdd56390f5a98';
+  const apiKey = process.env.REACT_APP_NEWS_API;
   console.log(apiKey);
+  const apiURL = process.env.REACT_APP_BASE_URL_API;
+  console.log(apiURL);
 
   const [progress, setProgress] = useState(0);
 
   return (
+    <ThemeProvider>
     <Router>
       <LoadingBar
         color="#f11946"
@@ -119,10 +126,18 @@ const App = () => {
                 category="technology"
               />
             }
+
           />
+            <Route path="/about" element={<AboutUs />} />
         </Routes>
+        <Routes>
+        {/* Your existing routes */}
+        <Route path="/login" element={<Login apiURL={apiURL} />} /> 
+      </Routes>
       </div>
     </Router>
+    </ThemeProvider>
+
   );
 };
 export default App;
