@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = ({apiURL}) => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
@@ -45,6 +45,9 @@ const Login = ({apiURL}) => {
             />
           </div>
           <button type="submit" className="auth-button">Login</button>
+          <div className="auth-redirect">
+  <p>Don't have an account? <Link to="/signup" className="auth-link">Sign up</Link></p>
+</div>
         </form>
       </div>
     </div>

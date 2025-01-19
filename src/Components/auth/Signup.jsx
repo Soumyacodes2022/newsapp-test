@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-const Signup = () => {
+const Signup = ({apiURL}) => {
   const [userData, setUserData] = useState({
     email: '',
     password: '',
@@ -12,7 +12,7 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(`${process.env.REACT_APP_BASE_URL_API}/api/signup`, {
+    const response = await fetch(`${apiURL}/api/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -64,6 +64,9 @@ const Signup = () => {
             />
           </div>
           <button type="submit" className="auth-button">Sign Up</button>
+          <div className="auth-redirect">
+  <p>Already have an account? <Link to="/login" className="auth-link">Login</Link></p>
+</div>
         </form>
       </div>
     </div>

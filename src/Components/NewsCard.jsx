@@ -1,7 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const NewsItem = (props) => {
-  const { title, description, imageURL, URL, publishedAt, source } = props;
+  const { title, description, imageURL, URL, publishedAt, source, sourceUrl, isBookmarkPage, onDelete } = props;
+  // console.log(sourceUrl)
+
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const isAuthenticated = localStorage.getItem('token');
+
+  const handleBookmark = async () => {
+    if (!isAuthenticated) return;
+
+    try {
+      const bookMarkPayload = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          content: description,
+          url: URL,
+          image: imageURL,
+          publishedAt,
+          source:{
+            name: source,
+            url: sourceUrl
+          }
+        })
+      }
+      // console.log(bookMarkPayload.body)
+      const response = await fetch('http://localhost:3000/api/bookmark', bookMarkPayload);
+
+      if (response.ok) {
+        setIsBookmarked(true);
+      }
+    } catch (error) {
+      console.error('Error bookmarking:', error);
+    }
+  };
 
   return (
     <div className="news-card-container">
@@ -9,7 +47,16 @@ const NewsItem = (props) => {
         <div className="source-badge">
           <span className="badge-text">{source}</span>
         </div>
-        
+        {isAuthenticated && !isBookmarkPage && (
+        <div className="bookmark-icon" onClick={handleBookmark}>
+          <i className={`fas fa-bookmark ${isBookmarked ? 'bookmarked' : ''}`}></i>
+        </div>
+      )}
+      {isBookmarkPage && (
+        <div className="delete-icon" onClick={onDelete}>
+          <i className="fas fa-trash"></i>
+        </div>
+      )}
         <div className="image-container">
           <img 
             src={!imageURL ? "https://demofree.sirv.com/nope-not-here.jpg" : imageURL} 

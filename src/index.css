@@ -674,5 +674,246 @@
   .profile-icon:hover {
     color: #f11946;
   }
+  .profile-dropdown {
+    position: relative;
+    /* margin-left: 15px; */
+    /* display: inline-block; */
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 120%;
+    right: 0;
+    background: #4a5568;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    min-width: 200px;
+    animation: dropdownFade 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .dropdown-item {
+    padding: 12px 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+  
+  .dropdown-item:hover {
+    background: rgba(241, 25, 70, 0.1);
+    color: #f11946;
+  }
+  
+  .dropdown-divider {
+    height: 1px;
+    background: rgba(0, 0, 0, 0.1);
+    margin: 8px 0;
+  }
+  
+  @keyframes dropdownFade {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .profile-icon {
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+  
+  .profile-icon:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+    
+  .auth-redirect {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .auth-link {
+    color: #f11946;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .auth-link:hover {
+    text-decoration: underline;
+  }
+
+  .bookmark-icon {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 1;
+    cursor: pointer;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+  }
+  
+  .bookmark-icon:hover {
+    transform: scale(1.1);
+  }
+  
+  .bookmark-icon.bookmarked {
+    color: #f11946;
+  }
+
+  .bookmark-icon i {
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+  
+  .bookmark-icon i.bookmarked {
+    color: #f11946;
+    transform: scale(1.2);
+    animation: bookmarkPop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+  
+  @keyframes bookmarkPop {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.4);
+    }
+    100% {
+      transform: scale(1.2);
+    }
+  }
+
+  .bookmarks-container {
+    padding: 20px;
+    background: var(--bg-primary);
+    min-height: 100vh;
+    padding-top: 2rem;
+  }
+
+  .delete-icon {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 1;
+    cursor: pointer;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+  }
+  
+  .delete-icon:hover {
+    color: #f11946;
+    transform: scale(1.1);
+  }
+
+  .empty-bookmarks {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    margin: 2rem auto;
+    max-width: 600px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .empty-icon {
+    font-size: 4rem;
+    color: #f11946;
+    margin-bottom: 1.5rem;
+    opacity: 0.8;
+  }
+  
+  .empty-bookmarks h2 {
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+  
+  .empty-bookmarks p {
+    color: var(--card-description);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .browse-news-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: linear-gradient(45deg, #ff6b6b, #f11946);
+    color: white;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .browse-news-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(241, 25, 70, 0.2);
+    color: white;
+  }
+
+  .empty-news {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    margin: 2rem auto;
+    max-width: 600px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .empty-news .empty-icon {
+    font-size: 4rem;
+    color: #f11946;
+    margin-bottom: 1.5rem;
+    animation: pulse 2s infinite;
+  }
+  
+  .empty-news h2 {
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+  
+  .empty-news p {
+    color: var(--card-description);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .refresh-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: linear-gradient(45deg, #ff6b6b, #f11946);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .refresh-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(241, 25, 70, 0.2);
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
   
   

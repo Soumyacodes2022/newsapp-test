@@ -207,6 +207,7 @@ const News = (props) => {
             </span>
           </h1>
         </div>
+        {results && results.length > 0 ? (
         <div className="news-grid-container">
           <div className="news-grid">
             {results &&
@@ -221,11 +222,22 @@ const News = (props) => {
                     URL={item.url}
                     publishedAt={item.publishedAt}
                     source={item.source.name}
+                    sourceUrl={item.source.url}
                   />
                 </div>
               ))}
           </div>
         </div>
+        ) : (
+          <div className="empty-news">
+            <i className="fas fa-newspaper empty-icon"></i>
+            <h2>No News Found</h2>
+            <p>Try adjusting your search or check back later for fresh updates!</p>
+            <button onClick={() => updateNews()} className="refresh-btn">
+              <i className="fas fa-sync-alt"></i> Refresh News
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
