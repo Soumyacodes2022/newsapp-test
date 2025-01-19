@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useContext, useRef} from "react";
 // import PropTypes from 'prop-types'
-import { Link , useLocation } from "react-router-dom";
+import { Link , useLocation, useNavigate } from "react-router-dom";
 // import { useContext } from 'react';
 import { ThemeContext } from '../context/ThemeContext';
 
@@ -11,8 +11,10 @@ const Navbar = ({updateNews}) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
   const [searchFocused, setSearchFocused] = useState(false);
+  const [showSignInModal, setShowSignInModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const isAuthenticated = localStorage.getItem('token');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -32,6 +34,13 @@ const Navbar = ({updateNews}) => {
      console.log("Profile clicked, current state:", showDropdown);
      setShowDropdown(!showDropdown);
    };
+
+   const handleProtectedRouteClick = (e, path) => {
+    if (!isAuthenticated) {
+      e.preventDefault();
+      setShowSignInModal(true);
+    }
+  };
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -60,8 +69,7 @@ const Navbar = ({updateNews}) => {
 
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        {isAuthenticated ? (
-          <>
+        
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <Link className={`nav-link ${location.pathname === "/" ? "active" : "" }`} aria-current="page" to="/">
@@ -69,41 +77,43 @@ const Navbar = ({updateNews}) => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link className={`nav-link ${location.pathname === "/business" ? "active" : "" }`} to="/business">
+              <Link className={`nav-link ${location.pathname === "/business" ? "active" : "" }`} to="/business" onClick={(e) => handleProtectedRouteClick(e, '/business')}>
                 Business{" "}
               </Link>
             </li>
             <li className="nav-item">
-              <Link className={`nav-link ${location.pathname === "/entertainment" ? "active" : "" }`} to="/entertainment">
+              <Link className={`nav-link ${location.pathname === "/entertainment" ? "active" : "" }`} to="/entertainment" onClick={(e) => handleProtectedRouteClick(e, '/entertainment')}>
                 Entertainment
               </Link>
             </li>
             <li className="nav-item">
-              <Link className={`nav-link ${location.pathname === "/health" ? "active" : "" }`} to="/health">
+              <Link className={`nav-link ${location.pathname === "/health" ? "active" : "" }`} to="/health" onClick={(e) => handleProtectedRouteClick(e, '/health')}>
                 Health
               </Link>
             </li>
             <li className="nav-item">
-              <Link className={`nav-link ${location.pathname === "/science" ? "active" : "" }`} to="/science">
+              <Link className={`nav-link ${location.pathname === "/science" ? "active" : "" }`} to="/science" onClick={(e) => handleProtectedRouteClick(e, '/science')}>
                 Science
               </Link>
             </li>
             <li className="nav-item">
-              <Link className={`nav-link ${location.pathname === "/sports" ? "active" : "" }`} to="/sports">
+              <Link className={`nav-link ${location.pathname === "/sports" ? "active" : "" }`} to="/sports" onClick={(e) => handleProtectedRouteClick(e, '/sports')}>
                 Sports
               </Link>
             </li>
             <li className="nav-item">
-              <Link className={`nav-link ${location.pathname === "/technology" ? "active" : "" }`} to="/technology">
+              <Link className={`nav-link ${location.pathname === "/technology" ? "active" : "" }`} to="/technology" onClick={(e) => handleProtectedRouteClick(e, '/technology')}>
                 Technology{" "}
               </Link>
             </li>
             <li className="nav-item">
-              <Link className={`nav-link ${location.pathname === "/about" ? "active" : "" }`} to="/about">
+              <Link className={`nav-link ${location.pathname === "/about" ? "active" : "" }`} to="/about" onClick={(e) => handleProtectedRouteClick(e, '/about')}>
                 About Us
               </Link>
             </li>
           </ul>
+          {isAuthenticated ? (
+          <>
           <div className="ms-auto d-flex align-items-center">
         
             <form className="d-flex search-container" role="search" onSubmit={handleSearch}>
@@ -162,8 +172,38 @@ const Navbar = ({updateNews}) => {
         )}
       </div>
         </div>
+        {showSignInModal && (
+        <div className="modal show d-block" style={{backgroundColor: 'rgba(0,0,0,0.5)'}}>
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Sign In Required</h5>
+                <button type="button" className="btn-close" onClick={() => setShowSignInModal(false)}></button>
+              </div>
+              <div className="modal-body">
+                <p>Please sign in to access this feature and explore more news categories!</p>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={() => setShowSignInModal(false)}>Close</button>
+                <button 
+                  type="button" 
+                  className="btn btn-primary"
+                  onClick={() => {
+                    setShowSignInModal(false);
+                    navigate('/login');
+                  }}
+                >
+                  Sign In
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {/* </div> */}
     </nav>
+
+    
   );
 };
 
