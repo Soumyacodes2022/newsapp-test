@@ -19,6 +19,7 @@ const News = (props) => {
     props.setProgress(15);
     let url = `https://gnews.io/api/v4/top-headlines?${searchTerm ? `q=${searchTerm}&` : ``}category=${props.category}&lang=en&country=${props.country}&apikey=${props.apiKey}&max=100`;
     let data = await fetch(url);
+    console.log(data);
     // let data = {
     //   articles: [
     //     {
@@ -153,6 +154,7 @@ const News = (props) => {
     setResults(parsedData.articles);
     props.setProgress(100);
   };
+  // console.log(updateNews(), "updateNews");
 
   // const updateNewsSearch = async(searchTerm='') => {
   //   props.setProgress(15);
@@ -170,13 +172,13 @@ const News = (props) => {
     updateNews();
   }, []);
 
-  const fetchMoreData = async () => {
-    setPage(page + 1);
-    const url = `https://gnews.io/api/v4/search?q=${props.category}&lang=en&country=${props.country}&apikey=${props.apiKey}`;
-    const data = await fetch(url);
-    const parsedData = await data.json();
-    setResults(results.concat(parsedData.results));
-  };
+  // const fetchMoreData = async () => {
+  //   setPage(page + 1);
+  //   const url = `https://gnews.io/api/v4/search?q=${props.category}&lang=en&country=${props.country}&apikey=${props.apiKey}`;
+  //   const data = await fetch(url);
+  //   const parsedData = await data.json();
+  //   setResults(results.concat(parsedData.results));
+  // };
 
   useEffect(() => {
     const interval = setInterval(() => {

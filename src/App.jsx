@@ -58,7 +58,7 @@ const App = () => {
                 <News setProgress={setProgress} apiKey={apiKey} key="technology" country="in" category="technology" />
               } />
               <Route path="/about" element={<AboutUs />} />
-              <Route path="/bookmarks" element={<Bookmark apiURL={apiURL} />} />
+              <Route path="/bookmarks" element={<Bookmark setProgress={setProgress} apiURL={apiURL} />} />
             </>
           )}
         </Routes>

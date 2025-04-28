@@ -127,6 +127,11 @@ const AboutUs = () => {
             <h3>Responsive Design</h3>
             <p>Seamless experience across all devices</p>
           </div>
+          <div className="feature">
+            <i className="fas fa-bookmark"></i>
+            <h3>News Bookmarks</h3>
+            <p>Access Bookmarked News Anytime/Anywhere</p>
+          </div>
         </div>
       </div>
     {/* </div> */}

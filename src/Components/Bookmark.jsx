@@ -3,7 +3,7 @@ import NewsCard from './NewsCard';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 
-const Bookmark = ({apiURL}) => {
+const Bookmark = ({apiURL, setProgress}) => {
   const [bookmarks, setBookmarks] = useState([]);
   console.log(apiURL)
   console.log(bookmarks);
@@ -21,8 +21,11 @@ const Bookmark = ({apiURL}) => {
         }
       };
     const fetchbookmarks = async () => {
+      setProgress(15);
       const response = await fetch(`${apiURL}/api/bookmark`, fetchHeaders);
+      setProgress(50);
       const data = await response.json();
+      setProgress(100);
       console.log(data)
       setBookmarks(data.bookmarks);
     };

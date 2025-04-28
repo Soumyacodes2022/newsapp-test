@@ -13,6 +13,7 @@ const Navbar = ({updateNews}) => {
   const [searchFocused, setSearchFocused] = useState(false);
   const [showSignInModal, setShowSignInModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  console.log(searchTerm)
   const isAuthenticated = localStorage.getItem('token');
   const navigate = useNavigate();
 
@@ -139,15 +140,15 @@ const Navbar = ({updateNews}) => {
             </div>
             {showDropdown && (
               <div className="dropdown-menu show">
-                  <Link to="/profile" className="dropdown-item">
+                  {/* <Link to="/profile" className="dropdown-item">
                     <i className="fas fa-user"></i> Profile
-                  </Link>
+                  </Link> */}
                   <Link to="/bookmarks" className="dropdown-item">
                     <i className="fas fa-bookmark"></i> Bookmarks
                   </Link>
-                  <Link to="/settings" className="dropdown-item">
+                  {/* <Link to="/settings" className="dropdown-item">
                     <i className="fas fa-cog"></i> Settings
-                  </Link>
+                  </Link> */}
                   <div className="dropdown-divider"></div>
                   <button 
                     className="dropdown-item text-danger"
