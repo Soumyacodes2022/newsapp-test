@@ -5,14 +5,13 @@ const Signup = ({apiURL}) => {
   const [userData, setUserData] = useState({
     email: '',
     password: '',
-    firstName: '',
-    lastName: ''
+    name:''
   });
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(`${apiURL}/api/signup`, {
+    const response = await fetch(`${apiURL}/auth/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -35,16 +34,8 @@ const Signup = ({apiURL}) => {
             <input
               type="text"
               placeholder="First Name"
-              value={userData.firstName}
-              onChange={(e) => setUserData({...userData, firstName: e.target.value})}
-            />
-          </div>
-          <div className="form-group">
-            <input
-              type="text"
-              placeholder="Last Name"
-              value={userData.lastName}
-              onChange={(e) => setUserData({...userData, lastName: e.target.value})}
+              value={userData.name}
+              onChange={(e) => setUserData({...userData, name: e.target.value})}
             />
           </div>
           <div className="form-group">

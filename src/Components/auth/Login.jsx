@@ -9,7 +9,7 @@ const Login = ({apiURL}) => {
 //   console.log(API_URL);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(`${apiURL}/api/signin`, {
+    const response = await fetch(`${apiURL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

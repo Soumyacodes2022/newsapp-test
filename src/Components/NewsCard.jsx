@@ -31,7 +31,8 @@ const NewsItem = (props) => {
         })
       }
       // console.log(bookMarkPayload.body)
-      const response = await fetch('http://localhost:3000/api/bookmark', bookMarkPayload);
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL_API}/bookmarks`, bookMarkPayload);
+      console.log(response)
 
       if (response.ok) {
         setIsBookmarked(true);

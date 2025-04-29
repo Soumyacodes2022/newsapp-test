@@ -22,19 +22,20 @@ const Bookmark = ({apiURL, setProgress}) => {
       };
     const fetchbookmarks = async () => {
       setProgress(15);
-      const response = await fetch(`${apiURL}/api/bookmark`, fetchHeaders);
+      const response = await fetch(`${apiURL}/bookmarks`, fetchHeaders);
+      console.log(response)
       setProgress(50);
       const data = await response.json();
       setProgress(100);
       console.log(data)
-      setBookmarks(data.bookmarks);
+      setBookmarks(data.data);
     };
 
     fetchbookmarks();
   }, []);
 
   const handleDelete = async (bookmarkId) => {
-    const response = await fetch(`http://localhost:3000/api/bookmark?id=${bookmarkId}`, {
+    const response = await fetch(`${apiURL}/bookmarks/${bookmarkId}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -42,7 +43,7 @@ const Bookmark = ({apiURL, setProgress}) => {
     });
   
     if (response.ok) {
-      setBookmarks(bookmarks.filter(bookmark => bookmark.id !== bookmarkId));
+      setBookmarks(bookmarks.filter(bookmark => bookmark._id !== bookmarkId));
     }
   };
 
@@ -57,20 +58,22 @@ const Bookmark = ({apiURL, setProgress}) => {
         bookmarks.length > 0 ? (
             <div className="news-grid-container">
         <div className="news-grid">
-          {bookmarks.map((item, index) => (
-            <div className="grid-item" key={index}>
-              <NewsCard
-                title={item.title}
-                description={item.description}
-                imageURL={item.image}
-                URL={item.url}
-                publishedAt={item.publishedAt}
-                source={item.sourceName}
-                isBookmarkPage={true}
-  onDelete={() => handleDelete(item.id)}
-              />
-            </div>
-          ))}
+        {bookmarks.map((item, index) => (
+  <div className="grid-item" key={index}>
+    <NewsCard
+      title={item.title}
+      description={item.description}
+      imageURL={item.image}
+      URL={item.url}
+      publishedAt={item.publishedAt}
+      source={item.source.name}  // Change from item.sourceName to item.source.name
+      sourceUrl={item.source.url} // Add the source URL
+      isBookmarkPage={true}
+      onDelete={() => handleDelete(item._id)} // Change from item.id to item._id
+    />
+  </div>
+))}
+
         </div>
       </div>
         ): (
