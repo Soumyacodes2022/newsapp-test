@@ -9,11 +9,15 @@ import { ThemeProvider } from "./context/ThemeContext";
 import Login from "./Components/auth/Login";
 import Signup from "./Components/auth/Signup";
 import Bookmark from "./Components/Bookmark";
+import Dashboard from "./Components/Dashboard";
+import Analytics  from "./Components/Analytics";
+
 // import PropTypes from 'prop-types'
 
 const App = () => {
-  // const apiKey = 'pub_3188391b3fa0ba9978a80ebacdd56390f5a98';
-  const apiKey = process.env.REACT_APP_NEWS_API;
+  const apiKey = '8655db5514f3307ec682f145c7f4b134';
+  // const apiURL="https://gnews.io/api/v4/search?q=example&apikey="
+  // const apiKey = process.env.REACT_APP_NEWS_API;
   console.log(apiKey);
   const apiURL = process.env.REACT_APP_BASE_URL_API;
   console.log(apiURL);
@@ -32,10 +36,11 @@ const App = () => {
       <div>
       <Routes>
           {/* Public routes */}
-          <Route path="/" element={
-            <News setProgress={setProgress} apiKey={apiKey} key="general" country="in" category="top" />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/" element={<Analytics />
+            // <News setProgress={setProgress} apiKey={apiKey} key="general" country="in" category="top" />
           } />
-
+          
           {/* Protected routes */}
           {isAuthenticated && (
             <>
