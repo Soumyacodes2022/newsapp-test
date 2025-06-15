@@ -7,10 +7,10 @@ import { ThemeProvider } from "./context/ThemeContext";
 import Login from "./Components/auth/Login";
 import Signup from "./Components/auth/Signup";
 import Bookmark from "./Components/Bookmark";
-import NotificationSettings from "./Components/NotificationSettings";
-import NotificationToast from "./Components/NotificationToast";
+// import NotificationSettings from "./Components/NotificationSettings";
+// import NotificationToast from "./Components/NotificationToast";
 import usePushNotifications from "./hooks/usePushNotifications";
-import { debugFirebase } from "./utils/firebaseDebug";
+// import { debugFirebase } from "./utils/firebaseDebug";
 
 const App = () => {
   const apiKey = process.env.REACT_APP_NEWS_API;
@@ -31,11 +31,11 @@ const App = () => {
   } = usePushNotifications();
 
   // Debug Firebase setup in development
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
-      debugFirebase();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (process.env.NODE_ENV === 'development') {
+  //     debugFirebase();
+  //   }
+  // }, []);
 
   // Check notification permission on app load
   useEffect(() => {
@@ -48,7 +48,7 @@ const App = () => {
       // - User hasn't seen banner before
       // - User is not already subscribed
       // - Permission is not denied
-      if (isSupported && !hasSeenBanner && !isSubscribed && permission !== 'denied') {
+      if (isAuthenticated && isSupported && !hasSeenBanner && !isSubscribed && permission !== 'denied') {
         setShowNotificationBanner(true);
       }
     };
@@ -80,6 +80,7 @@ const App = () => {
   const handleEnableNotifications = async () => {
     try {
       const granted = await requestPermission();
+      console.log(granted)
       if (granted) {
         const userId = isAuthenticated ? JSON.parse(localStorage.getItem('user'))?.id : null;
         await subscribeToNotifications(['all'], userId);
@@ -242,10 +243,10 @@ const App = () => {
                   } 
                 />
                 {/* Notification Settings Route */}
-                <Route 
+                {/* <Route 
                   path="/notifications" 
                   element={<NotificationSettings />} 
-                />
+                /> */}
               </>
             )}
           </Routes>
@@ -260,11 +261,11 @@ const App = () => {
         </div>
 
         {/* Notification Toast for foreground notifications */}
-        <NotificationToast 
+        {/* <NotificationToast 
           notification={notification}
           onNotificationClick={handleNotificationClick}
           onClose={clearNotification}
-        />
+        /> */}
 
         {/* Notification Status Indicator */}
         {isAuthenticated && (
