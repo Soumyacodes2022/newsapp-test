@@ -14,8 +14,21 @@ const NewsItem = (props) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [showComments, setShowComments] = useState(false);
   
+  // NEW: Enhanced features states
+  const [replyingTo, setReplyingTo] = useState(null);
+  const [replyText, setReplyText] = useState('');
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [commentLikes, setCommentLikes] = useState({});
+  const [showShareModal, setShowShareModal] = useState(false);
+  
   const isAuthenticated = localStorage.getItem('token');
   const apiURL = process.env.REACT_APP_BASE_URL_API;
+
+  // Emoji data
+  const emojis = [
+    '😀', '😂', '😍', '🤔', '😢', '😡', '👍', '👎', '❤️', '🔥',
+    '💯', '🎉', '😎', '🤝', '🙏', '💪', '👏', '🤗', '😱', '🤯'
+  ];
 
   useEffect(() => {
     if (URL) {
@@ -63,15 +76,47 @@ const NewsItem = (props) => {
     }
   };
 
-  const fetchComments = async () => {
+   const fetchComments = async () => {
     try {
       const response = await fetch(`${apiURL}/comments?article=${encodeURIComponent(URL)}`);
       if (response.ok) {
         const data = await response.json();
         setComments(data.data || []);
+        
+        // Fetch comment likes for authenticated users
+        if (isAuthenticated && data.data?.length > 0) {
+          const allCommentIds = [];
+          data.data.forEach(comment => {
+            allCommentIds.push(comment._id);
+            if (comment.replies) {
+              comment.replies.forEach(reply => allCommentIds.push(reply._id));
+            }
+          });
+          fetchCommentLikes(allCommentIds);
+        }
       }
     } catch (error) {
       console.error('Error fetching comments:', error);
+    }
+  };
+
+  const fetchCommentLikes = async (commentIds) => {
+    try {
+      const response = await fetch(`${apiURL}/comments/likes/bulk`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ commentIds })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setCommentLikes(data.data || {});
+      }
+    } catch (error) {
+      console.error('Error fetching comment likes:', error);
     }
   };
 
@@ -159,13 +204,37 @@ const NewsItem = (props) => {
         },
         body: JSON.stringify({
           article: URL,
-          content: newComment
+          content: newComment,
+          parentId: replyingTo
         })
       });
 
       if (response.ok) {
         const data = await response.json();
-        setComments([...comments, data.comment]);
+        
+        const newCommentData = {
+          _id: data.data._id,
+          content: data.data.content,
+          createdAt: data.data.createdAt,
+          user: data.data.user,
+          parentId: data.data.parentId,
+          replies: []
+        };
+        
+        if (replyingTo) {
+          // Add as reply
+          setComments(comments.map(comment => 
+            comment._id === replyingTo 
+              ? { ...comment, replies: [newCommentData, ...(comment.replies || [])] }
+              : comment
+          ));
+          setReplyingTo(null);
+          setReplyText('');
+        } else {
+          // Add as new comment
+          setComments([newCommentData, ...comments]);
+        }
+        
         setNewComment('');
       }
     } catch (error) {
@@ -228,6 +297,241 @@ const NewsItem = (props) => {
     setIsFullScreen(!isFullScreen);
   };
 
+  const handleCommentLike = async (commentId) => {
+    if (!isAuthenticated) return;
+
+    try {
+      const isLiked = commentLikes[commentId]?.isLiked;
+      const response = await fetch(`${apiURL}/comments/${commentId}/like`, {
+        method: isLiked ? 'DELETE' : 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setCommentLikes(prev => ({
+          ...prev,
+          [commentId]: {
+            count: data.data.count,
+            isLiked: !isLiked
+          }
+        }));
+      }
+    } catch (error) {
+      console.error('Error liking comment:', error);
+    }
+  };
+
+  const handleShare = async (platform) => {
+    const shareData = {
+      title: title,
+      text: description,
+      url: URL
+    };
+
+    try {
+      switch (platform) {
+        case 'copy':
+          await navigator.clipboard.writeText(URL);
+          alert('Link copied to clipboard!');
+          break;
+        case 'twitter':
+          window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(URL)}`, '_blank');
+          break;
+        case 'facebook':
+          window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(URL)}`, '_blank');
+          break;
+        case 'whatsapp':
+          window.open(`https://wa.me/?text=${encodeURIComponent(title + ' ' + URL)}`, '_blank');
+          break;
+      }
+      setShowShareModal(false);
+    } catch (error) {
+      console.error('Error sharing:', error);
+    }
+  };
+
+  const insertEmoji = (emoji) => {
+    const textarea = document.getElementById(replyingTo ? 'reply-textarea' : 'comment-textarea');
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = replyingTo ? replyText : newComment;
+    const newText = text.substring(0, start) + emoji + text.substring(end);
+    
+    if (replyingTo) {
+      setReplyText(newText);
+    } else {
+      setNewComment(newText);
+    }
+    
+    setShowEmojiPicker(false);
+    textarea.focus();
+  };
+
+  const renderComment = (comment, isReply = false) => (
+    <div key={comment._id} className={`${isReply ? 'ml-8 mt-3' : ''} ${
+      isDarkMode ? 'bg-gray-800 hover:bg-gray-750' : 'bg-gray-50 hover:bg-gray-100'
+    } p-4 rounded-lg transition-all duration-300`}>
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center space-x-3">
+          <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+            <span className="text-white text-sm font-bold">
+              {(comment.user?.name || 'A').charAt(0).toUpperCase()}
+            </span>
+          </div>
+          <div>
+            <span className="font-semibold text-sm">
+              {comment.user?.name || 'Anonymous'}
+            </span>
+            <p className="text-xs text-gray-500">
+              {new Date(comment.createdAt).toLocaleDateString('en-US', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+              })}
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <p className={`leading-relaxed mb-3 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+        {comment.content}
+      </p>
+      
+      {/* Comment Actions */}
+      <div className="flex items-center space-x-4">
+        <button
+          onClick={() => handleCommentLike(comment._id)}
+          className={`flex items-center space-x-1 px-2 py-1 rounded-full text-sm transition-all duration-200 ${
+            commentLikes[comment._id]?.isLiked
+              ? 'text-red-500 bg-red-100 dark:bg-red-900/30'
+              : 'text-gray-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20'
+          }`}
+          disabled={!isAuthenticated}
+        >
+          <i className="fas fa-heart"></i>
+          <span>{commentLikes[comment._id]?.count || 0}</span>
+        </button>
+        
+        {!isReply && isAuthenticated && (
+          <button
+            onClick={() => {
+              setReplyingTo(comment._id);
+              setReplyText(`@${comment.user?.name} `);
+            }}
+            className="flex items-center space-x-1 px-2 py-1 rounded-full text-sm text-gray-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200"
+          >
+            <i className="fas fa-reply"></i>
+            <span>Reply</span>
+          </button>
+        )}
+        
+        <button
+          onClick={() => setShowShareModal(true)}
+          className="flex items-center space-x-1 px-2 py-1 rounded-full text-sm text-gray-500 hover:text-green-500 hover:bg-green-50 dark:hover:bg-green-900/20 transition-all duration-200"
+        >
+          <i className="fas fa-share"></i>
+          <span>Share</span>
+        </button>
+      </div>
+      
+      {/* Replies */}
+      {comment.replies && comment.replies.length > 0 && (
+        <div className="mt-4">
+          {comment.replies.map(reply => renderComment(reply, true))}
+        </div>
+      )}
+      
+      {/* Reply Form */}
+      {replyingTo === comment._id && (
+        <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+          <form onSubmit={handleCommentSubmit} className="space-y-3">
+            <div className="relative">
+              <textarea
+                id="reply-textarea"
+                value={replyText}
+                onChange={(e) => setReplyText(e.target.value)}
+                placeholder="Write a reply..."
+                className={`w-full p-3 pr-12 border rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 ${
+                  isDarkMode
+                    ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
+                    : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                }`}
+                rows="2"
+              />
+              <button
+                type="button"
+                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                className="absolute bottom-2 right-2 p-2 text-gray-400 hover:text-yellow-500 transition-colors duration-200"
+              >
+                <i className="fas fa-smile text-lg"></i>
+              </button>
+            </div>
+            
+            {/* Emoji Picker for Reply */}
+            {showEmojiPicker && (
+              <div className={`absolute z-10 p-3 rounded-lg shadow-lg border max-w-xs ${
+                isDarkMode ? 'bg-gray-800 border-gray-600' : 'bg-white border-gray-200'
+              }`}>
+                <div className="grid grid-cols-6 gap-2 max-h-32 overflow-y-auto">
+                  {emojis.map((emoji, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() => insertEmoji(emoji)}
+                      className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors duration-200 text-lg"
+                    >
+                      {emoji}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            <div className="flex items-center justify-between">
+              <button
+                type="button"
+                onClick={() => {
+                  setReplyingTo(null);
+                  setReplyText('');
+                  setShowEmojiPicker(false);
+                }}
+                className="px-3 py-1 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={!replyText.trim()}
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+              >
+                Reply
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+    </div>
+  );
+
+  // Handle card click (open article) but prevent propagation for specific buttons
+  const handleCardClick = (e) => {
+    // Don't open article if clicking on interactive elements
+    if (e.target.closest('.no-propagate')) {
+      return;
+    }
+    window.open(URL, '_blank');
+  };
+
+  const handleReadMoreClick = (e) => {
+    e.stopPropagation(); // Prevent card click
+    setIsFullScreen(true); // Open in custom UI
+  };
+
   return (
     <>
       {/* News Card */}
@@ -271,6 +575,8 @@ const NewsItem = (props) => {
             <span className="text-white font-semibold">View Article</span>
           </div>
         </div>
+
+        
 
         {/* Content */}
         <div className="p-4">

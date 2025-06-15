@@ -34,6 +34,8 @@ const Navbar = ({updateNews}) => {
     "Electric Vehicles", "Quantum Computing", "Renewable Energy", "Biotechnology"
   ];
 
+  const isNotificationsEnabled = localStorage.getItem("fcmToken")
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -271,6 +273,30 @@ const Navbar = ({updateNews}) => {
                             <p className="text-xs opacity-60">Saved articles</p>
                           </div>
                         </Link>
+
+                        <Link
+  to="/notifications"
+  className={`flex items-center space-x-3 px-3 py-3 rounded-xl transition-all duration-200 hover:scale-105 ${
+    isDarkMode
+      ? 'text-gray-300 hover:text-white hover:bg-gray-700/50'
+      : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+  }`}
+  onClick={() => setShowDropdown(false)}
+>
+  <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center relative">
+    <i className="fas fa-bell text-purple-500 text-sm"></i>
+    {/* Notification indicator */}
+    {isNotificationsEnabled && (
+      <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border border-white dark:border-gray-800"></div>
+    )}
+  </div>
+  <div>
+    <span className="font-medium">Notifications</span>
+    <p className="text-xs opacity-60">Manage Alerts</p>
+    
+  </div>
+</Link>
+
                         
                         <div className="my-3 border-t border-gray-200 dark:border-gray-700"></div>
                         

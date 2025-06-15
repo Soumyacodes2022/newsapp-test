@@ -236,12 +236,13 @@ const usePushNotifications = () => {
       console.log('Unsubscribed locally');
 
       // Try to notify backend if available
-      if (process.env.REACT_APP_BASE_URL_API && process.env.REACT_APP_NODE_ENV !== 'development') {
+      if (process.env.REACT_APP_BASE_URL_API) {
         try {
-          const response = await fetch(`${process.env.REACT_APP_BASE_URL_API}/unsubscribe`, {
+          const response = await fetch(`${process.env.REACT_APP_BASE_URL_API}/notifications/unsubscribe`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
             body: JSON.stringify({
               fcmToken: storedToken

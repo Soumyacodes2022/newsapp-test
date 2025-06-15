@@ -7,7 +7,7 @@ import { ThemeProvider } from "./context/ThemeContext";
 import Login from "./Components/auth/Login";
 import Signup from "./Components/auth/Signup";
 import Bookmark from "./Components/Bookmark";
-// import NotificationSettings from "./Components/NotificationSettings";
+import NotificationSettings from "./Components/NotificationSettings";
 // import NotificationToast from "./Components/NotificationToast";
 import usePushNotifications from "./hooks/usePushNotifications";
 // import { debugFirebase } from "./utils/firebaseDebug";
@@ -243,10 +243,10 @@ const App = () => {
                   } 
                 />
                 {/* Notification Settings Route */}
-                {/* <Route 
+                <Route 
                   path="/notifications" 
                   element={<NotificationSettings />} 
-                /> */}
+                />
               </>
             )}
           </Routes>
