@@ -303,7 +303,7 @@ const usePushNotifications = () => {
       if (Notification.permission === 'granted') {
         const browserNotification = new Notification(notificationData.title || 'News Update', {
           body: notificationData.body,
-          icon: '/favicon.svg',
+          icon: '/favicon.png',
           image: notificationData.image,
           data: notificationData.data,
           tag: notificationData.data?.newsId || 'news-notification'

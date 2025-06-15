@@ -823,7 +823,7 @@ const Signup = ({ apiURL }) => {
                   required
                   value={formData.name}
                   onChange={handleInputChange}
-                  className={`w-full px-4 py-3 pl-12 border rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 ${
+                  className={`w-full px-6 py-3 pl-12 border rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 ${
                     isDarkMode
                       ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
                       : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
@@ -849,7 +849,7 @@ const Signup = ({ apiURL }) => {
                   required
                   value={formData.email}
                   onChange={handleInputChange}
-                  className={`w-full px-4 py-3 pl-12 border rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 ${
+                  className={`w-full px-6 py-3 pl-12 border rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 ${
                     isDarkMode
                       ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
                       : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
@@ -875,7 +875,7 @@ const Signup = ({ apiURL }) => {
                   required
                   value={formData.password}
                   onChange={handleInputChange}
-                  className={`w-full px-4 py-3 pl-12 pr-12 border rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 ${
+                  className={`w-full px-6 py-3 pl-12 pr-12 border rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 ${
                     isDarkMode
                       ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
                       : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
@@ -931,7 +931,7 @@ const Signup = ({ apiURL }) => {
                   required
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  className={`w-full px-4 py-3 pl-12 pr-12 border rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 ${
+                  className={`w-full px-6 py-3 pl-12 pr-12 border rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 ${
                     isDarkMode
                       ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
                       : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'

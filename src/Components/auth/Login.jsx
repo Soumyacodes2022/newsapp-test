@@ -421,11 +421,9 @@ const Login = ({ apiURL }) => {
         {/* Header */}
         <div className="text-center">
           <div className="flex justify-center">
-            <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
-              <i className="fas fa-newspaper text-white text-2xl"></i>
-            </div>
+            <img src="/favicon.png" className="w-28 h-28" alt="" />
           </div>
-          <h2 className={`mt-6 text-3xl font-bold ${
+          <h2 className={`mt-2 text-3xl font-bold ${
             isDarkMode ? 'text-white' : 'text-gray-900'
           }`}>
             Welcome back
@@ -546,7 +544,7 @@ const Login = ({ apiURL }) => {
                   required
                   value={credentials.email}
                   onChange={handleInputChange}
-                  className={`w-full px-4 py-3 pl-12 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 ${
+                  className={`w-full px-6 py-3 pl-12 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 ${
                     isDarkMode
                       ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
                       : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
@@ -571,7 +569,7 @@ const Login = ({ apiURL }) => {
                   required
                   value={credentials.password}
                   onChange={handleInputChange}
-                  className={`w-full px-4 py-3 pl-12 pr-12 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 ${
+                  className={`w-full px-6 py-3 pl-12 pr-12 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 ${
                     isDarkMode
                       ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
                       : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'

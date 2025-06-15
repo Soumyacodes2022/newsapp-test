@@ -125,18 +125,11 @@ const Navbar = ({updateNews}) => {
             {/* Logo Section */}
             <Link 
               to="/" 
-              className={`flex items-center space-x-3 text-2xl font-bold transition-all duration-300 hover:scale-105 ${
+              className={`flex items-center space-x-2 text-2xl font-bold transition-all duration-300 hover:scale-105 ${
                 isDarkMode ? 'text-white hover:text-blue-400' : 'text-gray-900 hover:text-blue-600'
               }`}
             >
-              <div className="relative">
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <i className="fas fa-newspaper text-white text-lg"></i>
-                </div>
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
-                  <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                </div>
-              </div>
+              <img src="/favicon.png" className="w-12 h-12" alt="Logo" />
               <span className="hidden sm:block">
                 Taaza<span className="text-blue-500">NEWS</span>
               </span>
