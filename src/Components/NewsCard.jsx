@@ -1049,6 +1049,19 @@ const TTSControls = ({ text, label, className = "" }) => {
               <span>View Article</span>
             </span>
           </div>
+          {/* Add this: Direct link to original article button */}
+  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+    <a 
+      href={URL} 
+      target="_blank" 
+      rel="noreferrer"
+      onClick={(e) => e.stopPropagation()} // Prevent opening slider
+      className="bg-white/90 hover:bg-white text-gray-900 px-4 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 shadow-lg"
+    >
+      <i className="fas fa-external-link-alt"></i>
+      <span>Read Original</span>
+    </a>
+  </div>
         </div>
 
         {/* Content */}
@@ -1266,6 +1279,18 @@ const TTSControls = ({ text, label, className = "" }) => {
         })}
       </span>
     </div>
+
+    {/* Add this: Prominent read original button */}
+  <a 
+    href={URL} 
+    target="_blank" 
+    rel="noreferrer"
+    className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center space-x-2"
+  >
+    <i className="fas fa-newspaper"></i>
+    <span>Read Full Article</span>
+    <i className="fas fa-external-link-alt text-sm"></i>
+  </a>
   </div>
 </div>
 

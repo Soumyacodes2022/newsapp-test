@@ -130,9 +130,6 @@ const Navbar = ({updateNews}) => {
               }`}
             >
               <img src="/favicon.png" className="w-12 h-12" alt="Logo" />
-              <span className="hidden sm:block">
-                Taaza<span className="text-blue-500">NEWS</span>
-              </span>
             </Link>
 
             {/* Desktop Navigation */}
