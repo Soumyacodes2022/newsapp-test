@@ -980,10 +980,6 @@ const TTSControls = ({ text, label, className = "" }) => {
       />
       
       <div className="flex items-center justify-between text-xs">
-        <div className="flex items-center space-x-2 text-purple-600 dark:text-purple-400">
-          <i className="fas fa-magic"></i>
-          <span>Powered by Gemini AI</span>
-        </div>
         {aiContent.originalLength && (
           <span className="text-purple-500 dark:text-purple-400 font-medium">
             {Math.round(aiContent.originalLength / 1000)}k chars analyzed
