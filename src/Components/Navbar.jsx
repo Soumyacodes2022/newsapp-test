@@ -250,6 +250,23 @@ const Navbar = ({updateNews}) => {
                         </div>
                         
                         <Link
+                          to="/dashboard"
+                          className={`flex items-center space-x-3 px-3 py-3 rounded-xl transition-all duration-200 hover:scale-105 ${
+                            isDarkMode
+                              ? 'text-gray-300 hover:text-white hover:bg-gray-700/50'
+                              : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                          }`}
+                          onClick={() => setShowDropdown(false)}
+                        >
+                          <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
+                            <i className="fas fa-chart-bar text-cyan-500 text-sm"></i>
+                          </div>
+                          <div>
+                            <span className="font-medium">Dashboard</span>
+                            <p className="text-xs opacity-60">View Analytics</p>
+                          </div>
+                        </Link>
+                        <Link
                           to="/bookmarks"
                           className={`flex items-center space-x-3 px-3 py-3 rounded-xl transition-all duration-200 hover:scale-105 ${
                             isDarkMode

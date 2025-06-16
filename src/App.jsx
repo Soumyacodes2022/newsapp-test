@@ -10,6 +10,7 @@ import Bookmark from "./Components/Bookmark";
 import NotificationSettings from "./Components/NotificationSettings";
 // import NotificationToast from "./Components/NotificationToast";
 import usePushNotifications from "./hooks/usePushNotifications";
+import DashboardLayout from "./Components/DashboarLayout";
 // import { debugFirebase } from "./utils/firebaseDebug";
 
 const App = () => {
@@ -247,6 +248,8 @@ const App = () => {
                   path="/notifications" 
                   element={<NotificationSettings />} 
                 />
+
+                <Route path="/dashboard" element={<DashboardLayout />} />
               </>
             )}
           </Routes>
